@@ -12,21 +12,34 @@
 
 
 # First download the data from the Web and unpack the dataset
+
 url <- "https://d396qusza40orc.cloudfront.net/getdata%2Fprojectfiles%2FUCI%20HAR%20Dataset.zip"
+
 path <- getwd()
+
 download.file(url, file.path(path, "dataFile.zip"), method = "curl")
+
 unzip('dataFile.zip')
 
 
 # and then choose the packages which will be used
+
 library(data.table)
+
 library(reshape2)
 
 # Set names and clean the data by creating these variables 
+
 activityLabels <- data.table::fread(file.path(path, "UCI HAR Dataset/activity_labels.txt")
-                                , col.names = c('classLabels', 'activityName'))
+                                
+                                 , col.names = c('classLabels', 'activityName'))
+
 features <- data.table::fread(file.path(path, "UCI HAR Dataset/features.txt")
+
                                 , col.names = c('index', 'featureNames'))
+
 featuresNeed <- grep("(mean|std)\\(\\)", features[, featureNames])
+
 measurement <- features[featuresNeed, featureNames]
+
 measurement <- gsub('[()]', '', measurement)
